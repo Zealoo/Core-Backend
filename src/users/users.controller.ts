@@ -47,7 +47,7 @@ export class UsersController {
   }
 
   @Auth(UserRole.Admin)
-  @Post('/role/:id')
+  @Patch('/role/:id')
   setUserRole(
     @Param('id') id: string,
     @Body() roleDto: RoleDto,
@@ -58,6 +58,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    if (updateUserDto['role']) delete updateUserDto['role'];
     return this.usersService.updateUser(id, updateUserDto);
   }
 
