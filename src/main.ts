@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -10,7 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
   // enable cors policy
   app.enableCors();
-
+  app.use(helmet());
   // global data transformation
   app.useGlobalPipes(
     new ValidationPipe({
