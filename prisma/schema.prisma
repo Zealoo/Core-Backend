@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String @id @default(cuid())
+  user_name   String
+  first_name  String
+  last_name   String
+  profile_img String @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png")
+  email       String
+  password    String
+  role        Role   @default(User)
+
+  suspend    Boolean @default(false)
+  accept_tos Boolean @default(false)
+
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+
+  community CommunityMembers[]
+  founder   Community[]
+
+
+  @@unique([user_name, email])
+  @@index([id, user_name, email])
+}
+
+model Community {
+  id            String  @id @default(cuid())
+  name          String
+  community_img String  @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png")
+  description   String?
+  founder_id    String
+  founder       User    @relation(fields: [founder_id], references: [id])
+
+  created_at DateTime @default(now())
+}
+
+model CommunityMembers {
+  id           String @id @default(cuid())
+  community_id String
+  user_id      String
+
+  created_at DateTime @default(now())
+
+  member User @relation(fields: [user_id], references: [id])
+}
+
+enum CommunityRole {
+  Admin
+  Mod
+  Member
+}
+
+enum Role {
+  Admin
+  Mod
+  User
+}
