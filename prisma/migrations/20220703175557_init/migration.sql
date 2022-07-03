@@ -26,7 +26,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Community" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "community_img" TEXT NOT NULL DEFAULT 'https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png',
+    "community_img" TEXT NOT NULL DEFAULT 'https://res.cloudinary.com/dizyob2oz/image/upload/v1656868674/communities_vozshg.jpg',
     "description" TEXT,
     "founder_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -52,8 +52,17 @@ CREATE INDEX "User_id_user_name_email_idx" ON "User"("id", "user_name", "email")
 -- CreateIndex
 CREATE UNIQUE INDEX "User_user_name_email_key" ON "User"("user_name", "email");
 
+-- CreateIndex
+CREATE INDEX "Community_id_name_idx" ON "Community"("id", "name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Community_name_key" ON "Community"("name");
+
 -- AddForeignKey
 ALTER TABLE "Community" ADD CONSTRAINT "Community_founder_id_fkey" FOREIGN KEY ("founder_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CommunityMembers" ADD CONSTRAINT "CommunityMembers_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CommunityMembers" ADD CONSTRAINT "CommunityMembers_community_id_fkey" FOREIGN KEY ("community_id") REFERENCES "Community"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

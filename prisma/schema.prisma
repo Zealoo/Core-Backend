@@ -38,13 +38,18 @@ model User {
 model Community {
   id            String  @id @default(cuid())
   name          String
-  community_img String  @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png")
+  community_img String  @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1656868674/communities_vozshg.jpg")
   description   String?
   founder_id    String
   founder       User    @relation(fields: [founder_id], references: [id])
 
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
+
+  CommunityMembers CommunityMembers[]
+
+  @@unique([name])
+  @@index([id, name])
 }
 
 model CommunityMembers {
@@ -55,7 +60,9 @@ model CommunityMembers {
 
   created_at DateTime @default(now())
 
-  member User @relation(fields: [user_id], references: [id])
+  member    User      @relation(fields: [user_id], references: [id])
+  community Community @relation(fields: [community_id], references: [id])
+
 }
 
 enum CommunityRole {
