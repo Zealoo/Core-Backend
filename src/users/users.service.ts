@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Role, User } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleDto } from './dto/role_dto';
@@ -34,6 +34,21 @@ export class UsersService {
     return user;
   }
 
+  async FindByLoginDetails(field: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        OR: [
+          {
+            email: field,
+          },
+          { user_name: field },
+        ],
+      },
+    });
+
+    return user;
+  }
+
   async findByEmail(email: string): Promise<User> {
     const user = await this.prismaService.user.findFirst({
       where: { email },
@@ -53,7 +68,7 @@ export class UsersService {
 
   // update user data
   async setUserRole(user: User, id: string, roleDto: RoleDto): Promise<User> {
-    if (user.role !== Role.Admin) throw new UnauthorizedException();
+    if (user.role !== UserRole.Admin) throw new UnauthorizedException();
     return this.prismaService.user.update({ data: roleDto, where: { id } });
   }
 

@@ -26,7 +26,7 @@ export class AuthService {
   // login handler
   async login(loginDto: LoginDto) {
     // checking if the user exist and raising exception if the user exist
-    const user = await this.userService.findByEmail(loginDto.email);
+    const user = await this.userService.FindByLoginDetails(loginDto.field);
     if (!user) throw new BadRequestException('Invalid credentials');
 
     // checking if the request password

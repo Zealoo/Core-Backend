@@ -1,6 +1,5 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
@@ -44,13 +43,6 @@ export class CreateUserDto {
   // transforming response body text to lower case
   @Transform(({ value }) => value.toLowerCase(), { toClassOnly: true })
   email: string;
-
-  @ApiProperty({
-    required: false,
-    example: 'User',
-  })
-  @Optional()
-  role: Role;
 
   @ApiProperty({
     required: false,

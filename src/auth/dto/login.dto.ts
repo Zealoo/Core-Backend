@@ -9,7 +9,7 @@ export class LoginDto {
   })
   // transforming response body text to lower case
   @Transform(({ value }) => value.toLowerCase(), { toClassOnly: true })
-  email: string;
+  field: string;
 
   @ApiProperty({
     required: true,

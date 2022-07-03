@@ -1,12 +1,10 @@
-import { applyDecorators } from '@nestjs/common';
-import { Role } from '@prisma/client';
-import { SetMetadata } from '@nestjs/common';
-import { UseGuards } from '@nestjs/common';
+import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { UserRole } from '@prisma/client';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/role.guard';
-import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
-export const Auth = (...roles: Role[]) => {
+export const Auth = (...roles: UserRole[]) => {
   return applyDecorators(
     SetMetadata('roles', roles),
     UseGuards(JwtAuthGuard, RolesGuard),

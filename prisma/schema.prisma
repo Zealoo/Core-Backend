@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(cuid())
+  id          String   @id @default(cuid())
   user_name   String
   first_name  String
   last_name   String
-  profile_img String @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png")
+  profile_img String   @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png")
   email       String
   password    String
-  role        Role   @default(User)
+  role        UserRole @default(User)
 
   suspend    Boolean @default(false)
   accept_tos Boolean @default(false)
@@ -43,7 +43,8 @@ model Community {
   founder_id    String
   founder       User    @relation(fields: [founder_id], references: [id])
 
-  created_at DateTime @default(now())
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
 }
 
 model CommunityMembers {
@@ -63,7 +64,7 @@ enum CommunityRole {
   Member
 }
 
-enum Role {
+enum UserRole {
   Admin
   Mod
   User

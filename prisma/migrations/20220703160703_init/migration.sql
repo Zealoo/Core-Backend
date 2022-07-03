@@ -2,7 +2,7 @@
 CREATE TYPE "CommunityRole" AS ENUM ('Admin', 'Mod', 'Member');
 
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('Admin', 'Mod', 'User');
+CREATE TYPE "UserRole" AS ENUM ('Admin', 'Mod', 'User');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -13,7 +13,7 @@ CREATE TABLE "User" (
     "profile_img" TEXT NOT NULL DEFAULT 'https://res.cloudinary.com/dizyob2oz/image/upload/v1636463581/profile_img.png',
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'User',
+    "role" "UserRole" NOT NULL DEFAULT 'User',
     "suspend" BOOLEAN NOT NULL DEFAULT false,
     "accept_tos" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -30,6 +30,7 @@ CREATE TABLE "Community" (
     "description" TEXT,
     "founder_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
 
     CONSTRAINT "Community_pkey" PRIMARY KEY ("id")
 );
@@ -39,6 +40,7 @@ CREATE TABLE "CommunityMembers" (
     "id" TEXT NOT NULL,
     "community_id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
+    "role" "CommunityRole" NOT NULL DEFAULT 'Member',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "CommunityMembers_pkey" PRIMARY KEY ("id")

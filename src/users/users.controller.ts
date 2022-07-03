@@ -1,4 +1,4 @@
-import { Role } from '.prisma/client';
+import { UserRole } from '.prisma/client';
 import {
   Body,
   Controller,
@@ -46,7 +46,7 @@ export class UsersController {
     return this.usersService.findByEmail(email);
   }
 
-  @Auth(Role.Admin)
+  @Auth(UserRole.Admin)
   @Post('/role/:id')
   setUserRole(
     @Param('id') id: string,
