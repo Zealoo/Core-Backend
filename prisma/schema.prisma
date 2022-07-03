@@ -47,9 +47,10 @@ model Community {
 }
 
 model CommunityMembers {
-  id           String @id @default(cuid())
+  id           String        @id @default(cuid())
   community_id String
   user_id      String
+  role         CommunityRole @default(Member)
 
   created_at DateTime @default(now())
 
