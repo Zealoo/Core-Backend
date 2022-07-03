@@ -7,7 +7,8 @@ import { CreateCommunityDto } from '../dto/create-community.dto';
 export class CommunityService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  createComminity(communityDto: CreateCommunityDto): Promise<Community> {
+  async createComminity(communityDto: CreateCommunityDto): Promise<Community> {
+    // const community = await this.getACommunityByIdOrName();
     return this.prismaService.community.create({
       data: communityDto,
     });
