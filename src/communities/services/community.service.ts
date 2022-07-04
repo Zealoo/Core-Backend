@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Community } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCommunityDto } from '../dto/create-community.dto';
+import { UpdateCommunityDto } from '../dto/update-community.dto';
 
 @Injectable()
 export class CommunityService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createComminity(communityDto: CreateCommunityDto): Promise<Community> {
-    // const community = await this.getACommunityByIdOrName();
+    const community = await this.getACommunityByIdOrName(communityDto.name);
+    if (!!community)
+      throw new BadRequestException('Community with that name already exists');
     return this.prismaService.community.create({
       data: communityDto,
     });
@@ -67,10 +70,12 @@ export class CommunityService {
     });
   }
 
-  updateCommunity(
+  async updateCommunity(
     id: string,
-    communityDto: CreateCommunityDto,
+    communityDto: UpdateCommunityDto,
   ): Promise<Community> {
+    const community = await this.getACommunityByIdOrName(communityDto.name);
+    if (!community) throw new BadRequestException('Community does not exists');
     return this.prismaService.community.update({
       data: communityDto,
       where: { id },

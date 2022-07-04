@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User, UserRole } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RoleDto } from './dto/role_dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRoleDto } from './dto/user_role_dto';
 
 @Injectable()
 export class UsersService {
@@ -67,7 +67,11 @@ export class UsersService {
   }
 
   // update user data
-  async setUserRole(user: User, id: string, roleDto: RoleDto): Promise<User> {
+  async setUserRole(
+    user: User,
+    id: string,
+    roleDto: UserRoleDto,
+  ): Promise<User> {
     if (user.role !== UserRole.Admin) throw new UnauthorizedException();
     return this.prismaService.user.update({ data: roleDto, where: { id } });
   }
@@ -83,6 +87,12 @@ export class UsersService {
     delete user.password;
 
     return user;
+  }
+
+  userCommunities(user_id: string) {
+    return this.prismaService.communityMembers.findMany({
+      where: { user_id },
+    });
   }
 
   // deleting User data

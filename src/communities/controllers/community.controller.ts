@@ -1,6 +1,17 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateCommunityDto } from '../dto/create-community.dto';
+import { UpdateCommunityDto } from '../dto/update-community.dto';
 import { CommunityService } from '../services/community.service';
 
 @ApiTags('Communities')
@@ -8,6 +19,7 @@ import { CommunityService } from '../services/community.service';
 export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createCommunityDto: CreateCommunityDto) {
     return this.communityService.createComminity(createCommunityDto);
@@ -31,7 +43,16 @@ export class CommunityController {
   }
 
   @Get('/count')
-  getUsersCount() {
+  getCommunitiesCount() {
     return this.communityService.communitiesCount();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  updateCommunity(
+    @Param('id') id: string,
+    @Body() updateCommunityDto: UpdateCommunityDto,
+  ) {
+    return this.communityService.updateCommunity(id, updateCommunityDto);
   }
 }

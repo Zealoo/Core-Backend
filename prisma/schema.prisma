@@ -40,14 +40,15 @@ model Community {
   name          String
   community_img String  @default("https://res.cloudinary.com/dizyob2oz/image/upload/v1656868674/communities_vozshg.jpg")
   description   String?
-  founder_id    String
-  founder       User    @relation(fields: [founder_id], references: [id])
+  balance       Float   @default(0) @db.Real
 
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
 
   CommunityMembers CommunityMembers[]
 
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
   @@unique([name])
   @@index([id, name])
 }
@@ -63,6 +64,7 @@ model CommunityMembers {
   member    User      @relation(fields: [user_id], references: [id])
   community Community @relation(fields: [community_id], references: [id])
 
+  @@index([id, community_id, user_id])
 }
 
 enum CommunityRole {
@@ -72,6 +74,7 @@ enum CommunityRole {
 }
 
 enum UserRole {
+  Super
   Admin
   Mod
   User

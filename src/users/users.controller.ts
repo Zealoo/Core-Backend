@@ -12,8 +12,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorator/auth.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RoleDto } from './dto/role_dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRoleDto } from './dto/user_role_dto';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
@@ -46,11 +46,16 @@ export class UsersController {
     return this.usersService.findByEmail(email);
   }
 
+  @Get('/communities/:id')
+  getUserCommunities(@Param('id') id: string) {
+    return this.usersService.userCommunities(id);
+  }
+
   @Auth(UserRole.Admin)
   @Patch('/role/:id')
   setUserRole(
     @Param('id') id: string,
-    @Body() roleDto: RoleDto,
+    @Body() roleDto: UserRoleDto,
     @Request() req,
   ) {
     return this.usersService.setUserRole(req.user, id, roleDto);

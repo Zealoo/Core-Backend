@@ -1,25 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
-export class CreateCommunityDto {
-  // validating first name to check if it empty or not
+export class CommunityMemberDto {
+  // validating community id to check if it empty or not
   @ApiProperty({
     required: true,
-    example: 'Zoolea',
+    example: 'cl55nhgdu0006m3ghwnxubj3f',
   })
   @IsNotEmpty()
   // transforming response body text to lower case
   @Transform(({ value }) => value.toLowerCase(), { toClassOnly: true })
-  name: string;
+  community_id: string;
 
   // validating first name to check if it empty or not
   @ApiProperty({
-    required: false,
-    example: 'this is zoolea community bla bla',
+    required: true,
+    example: 'cl55nhgdu0006m3ghwnxubj3f',
   })
-  @IsOptional()
+  @IsNotEmpty()
   // transforming response body text to lower case
   @Transform(({ value }) => value.toLowerCase(), { toClassOnly: true })
-  description: string;
+  user_id: string;
 }

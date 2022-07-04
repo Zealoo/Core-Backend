@@ -1,15 +1,15 @@
-import { UserRole } from '.prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { CommunityRole } from '@prisma/client';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 
-export class RoleDto {
+export class CommunityRoleDto {
   @ApiProperty({
     required: true,
-    enum: UserRole,
+    enum: CommunityRole,
     enumName: 'Role',
     description: 'enum for role',
   })
   @IsNotEmpty()
-  @IsEnum(UserRole)
-  role: UserRole;
+  @IsEnum(CommunityRole)
+  role: CommunityRole;
 }
